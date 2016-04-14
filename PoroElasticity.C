@@ -18,6 +18,8 @@
 #include "Utilities.h"
 #include "Tensor.h"
 #include "Vec3Oper.h"
+#include "IFEM.h"
+#include "tinyxml.h"
 
 typedef std::vector<int> IntVec;  //!< General integer vector
 
@@ -178,6 +180,34 @@ PoroElasticity::PoroElasticity (unsigned short int n, int order) : Elasticity(n)
   primsol.resize(1+order); // Current and previous timestep solutions required
   sc = 0.0;
   gacc = 9.81; //kmo: Danger! hard-coded physical property. Why not derive this one from gravity.length() instead ???
+}
+
+
+bool PoroElasticity::parse (const TiXmlElement* elem)
+{
+  if (strcasecmp(elem->Value(),"scaling"))
+    return this->Elasticity::parse(elem);
+  else if (utl::getAttribute(elem,"value",sc))
+    IFEM::cout <<"\tScaling: sc = "<< sc << std::endl;
+
+  return true;
+}
+
+
+Material* PoroElasticity::parseMatProp (const TiXmlElement* elem, bool)
+{
+  IFEM::cout <<" Poroelastic material, see \"Problem definition:\" below."
+             << std::endl;
+  material = new PoroMaterial();
+  material->parse(elem);
+  return material;
+}
+
+
+void PoroElasticity::printLog () const
+{
+  IFEM::cout <<"PoroElasticity: scaling = "<< sc << std::endl;
+  this->Elasticity::printLog();
 }
 
 
