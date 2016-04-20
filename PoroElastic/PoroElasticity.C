@@ -74,7 +74,7 @@ void PoroElasticity::MixedElmMats::makeNewtonMatrix_U(Matrix& N) const
 {
   size_t n = A[uu].rows();
   N.fillBlock(A[uu], 1, 1);
-  N.fillBlock(A[up], 1, 1+n);
+  N.addBlock(A[up], -1.0, 1, 1+n);
 }
 
 
@@ -138,7 +138,7 @@ void PoroElasticity::NonMixedElmMats::makeNewtonMatrix_U(Matrix& N) const
     for (size_t j = 1; j <= n; ++j) {
       for (size_t l = 1; l <= nsd; ++l) {
         // UP-coupling
-        N(nf*(i-1)+l, j*nf) = A[up](nsd*(i-1)+l, j);
+        N(nf*(i-1)+l, j*nf) = -A[up](nsd*(i-1)+l, j);
         for (size_t k = 1; k <= nsd; ++k) {
           // UU-coupling
           N(nf*(i-1)+l, (j-1)*nf+k) = A[uu](nsd*(i-1)+l, (j-1)*nsd+k);
@@ -321,7 +321,7 @@ bool PoroElasticity::evalElasticityMatrices (ElmMats& elMat, const Matrix& B,
     return false;
 
   Matrix CB;
-  CB.multiply(C,B).multiply(-fe.detJxW); // CB = dSdE*B*|J|*w
+  CB.multiply(C,B).multiply(fe.detJxW); // CB = dSdE*B*|J|*w
   elMat.A[uu].multiply(B,CB,true,false,true); // EK += B^T * CB
 
   return true;
