@@ -12,6 +12,7 @@
 
 #include "SIMPoroElasticity.h"
 #include "SIM2D.h"
+#include "TimeDomain.h"
 
 #include "gtest/gtest.h"
 
@@ -27,5 +28,8 @@ TEST(TestSIMPoroElasticity, Parse)
   ASSERT_FLOAT_EQ(grav.x,0.0);
   ASSERT_FLOAT_EQ(grav.y,0.0);
   ASSERT_FLOAT_EQ(grav.z,0.0);
-  ASSERT_FLOAT_EQ(poro->getScaling(),0.0);
+
+  TimeDomain t(0, true);
+  t.dt = 1.0;
+  ASSERT_FLOAT_EQ(poro->getScaling(Vec3(), t), 9.2064224e+08);
 }
