@@ -1,4 +1,4 @@
-Plaxis1DVerif.xinp -2D -mixed-full -LR
+Plaxis1DVerif.xinp -2D -mixed-full -LR -dyn
 
 	Topology sets: Bottom (1,3,1D)
 	               Top (1,4,1D)
@@ -19,12 +19,18 @@ Number of D-dofs      288
 Number of P-dofs      121
 Number of unknowns    352
   step=1  time=8475.82
-  Primary solution summary: L2-norm            : 0.0248471
-                   Pressure L2-norm            : 0.0894779
-                            Max Y-displacement : 0.10011
-                            Max pressure       : 0.099991
+  Displacement L2-norm            : 0.016212
+               Max Y-displacement : 0.0710102
+  Velocity L2-norm                : 3.82546e-06
+               Max Y-velocity     : 1.6756e-05
+  Acceleration L2-norm            : 0
+  Pressure L2-norm                : 0.0918672
+               Max pressure       : 0.1
   step=2  time=16951.6
-  Primary solution summary: L2-norm            : 0.0406314
-                   Pressure L2-norm            : 0.0859184
-                            Max Y-displacement : 0.149947
-                            Max pressure       : 0.0999457
+  Displacement L2-norm            : 0.0368128
+               Max Y-displacement : 0.140879
+  Velocity L2-norm                : 2.04618e-06
+               Max Y-velocity     : 8.47015e-06
+  Acceleration L2-norm            : 0
+  Pressure L2-norm                : 0.0871424
+               Max pressure       : 0.0999978

@@ -1,4 +1,4 @@
-SoilColumn3D.xinp -mixed-full
+SoilColumn3D.xinp -mixed-full -dyn
 
 	Length in X = 0.001
 	Length in Y = 0.008
@@ -24,12 +24,18 @@ Number of D-dofs      1536
 Number of P-dofs      343
 Number of unknowns    1246
   step=1  time=1200.2
-  Primary solution summary: L2-norm            : 0.000125749
-                   Pressure L2-norm            : 0.000259295
-                            Max Y-displacement : 0.000387386
-                            Max pressure       : 0.000349614
+  Displacement L2-norm            : 9.0771e-05
+               Max Y-displacement : 0.000296914
+  Velocity L2-norm                : 1.5126e-07
+               Max Y-velocity     : 4.94774e-07
+  Acceleration L2-norm            : 0
+  Pressure L2-norm                : 0.000356049
+               Max pressure       : 0.000471758
   step=2  time=2400.4
-  Primary solution summary: L2-norm            : 0.000176973
-                   Pressure L2-norm            : 0.00011852
-                            Max Y-displacement : 0.000517315
-                            Max pressure       : 0.000166106
+  Displacement L2-norm            : 0.00018838
+               Max Y-displacement : 0.000550027
+  Velocity L2-norm                : 4.03525e-08
+               Max Y-velocity     : 1.09222e-07
+  Acceleration L2-norm            : 0
+  Pressure L2-norm                : 9.47946e-05
+               Max pressure       : 0.000150474

@@ -1,4 +1,4 @@
-Plaxis1DVerif-nonmixed.xinp -2D
+Plaxis1DVerif-nonmixed.xinp -2D -dyn
 
 	Constitutive Properties:
 		Young's Modulus, E = 1e+06
@@ -16,10 +16,19 @@ Number of nodes       121
 Number of dofs        363
 Number of unknowns    310
   step=1  time=8475.82
-  Primary solution summary: L2-norm            : 0.0552476
-                            Max Y-displacement : 0.1
-                            Max pressure       : 0.0999912
+  Displacement L2-norm            : 0.0546096
+               Max Y-displacement : 0.0707107
+               Max Z-displacement : 0.100024
+  Velocity L2-norm                : 1.2886e-05
+               Max Y-velocity     : 1.66853e-05
+               Max Z-velocity     : 2.36023e-05
+  Acceleration L2-norm            : 0
   step=2  time=16951.6
-  Primary solution summary: L2-norm            : 0.0589531
-                            Max Y-displacement : 0.15
-                            Max pressure       : 0.0999451
+  Displacement L2-norm            : 0.0580218
+               Max Y-displacement : 0.141421
+               Max Z-displacement : 0.100026
+  Velocity L2-norm                : 1.36739e-05
+               Max Y-velocity     : 9.32307e-06
+               Max Z-velocity     : 2.95213e-05
+  Acceleration L2-norm            : 0
+               Max Z-acceleration : 1.70321e-08

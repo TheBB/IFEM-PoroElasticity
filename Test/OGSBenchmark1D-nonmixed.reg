@@ -1,4 +1,4 @@
-OGSBenchmark1D-nonmixed.xinp -2D
+OGSBenchmark1D-nonmixed.xinp -2D -dyn
 
 	Constitutive Properties:
 		Young's Modulus, E = 30000
@@ -16,10 +16,22 @@ Number of nodes       69
 Number of dofs        207
 Number of unknowns    154
   step=1  time=3.33
-  Primary solution summary: L2-norm            : 0.00181835
-                            Max Y-displacement : 0.0031607
-                            Max pressure       : 0.00333116
+  Displacement L2-norm            : 0.00181509
+               Max Y-displacement : 0.00223483
+               Max Z-displacement : 0.00333129
+  Velocity L2-norm                : 0.00109014
+               Max Y-velocity     : 0.00134224
+               Max Z-velocity     : 0.00200077
+  Acceleration L2-norm            : 0.000654742
+               Max Y-acceleration : 0.000806149
+               Max Z-acceleration : 0.00120167
   step=2  time=6.66
-  Primary solution summary: L2-norm            : 0.00189024
-                            Max Y-displacement : 0.00474104
-                            Max pressure       : 0.00332878
+  Displacement L2-norm            : 0.00186954
+               Max Y-displacement : 0.0044699
+               Max Z-displacement : 0.00333189
+  Velocity L2-norm                : 0.00115028
+               Max Y-velocity     : 0.000516892
+               Max Z-velocity     : 0.00227166
+  Acceleration L2-norm            : 0.00198224
+               Max Y-acceleration : 0.00161221
+               Max Z-acceleration : 0.00362723

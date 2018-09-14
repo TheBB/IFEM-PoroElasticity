@@ -1,4 +1,4 @@
-SoilColumn3D-nonmixed.xinp
+SoilColumn3D-nonmixed.xinp -dyn
 
 	Length in X = 0.001
 	Length in Y = 0.008
@@ -22,10 +22,18 @@ Number of nodes       343
 Number of dofs        1372
 Number of unknowns    888
   step=1  time=1200.2
-  Primary solution summary: L2-norm            : 0.00016794
-                            Max Y-displacement : 0.00038676
-                            Max pressure       : 0.000350497
+  Displacement L2-norm            : 0.000194264
+               Max Y-displacement : 0.000295694
+               Max x-displacement : 0.000473305
+  Velocity L2-norm                : 3.2372e-07
+               Max Y-velocity     : 4.92741e-07
+               Max x-velocity     : 7.88709e-07
+  Acceleration L2-norm            : 0
   step=2  time=2400.4
-  Primary solution summary: L2-norm            : 0.000161669
-                            Max Y-displacement : 0.00051739
-                            Max pressure       : 0.000166086
+  Displacement L2-norm            : 0.000166958
+               Max Y-displacement : 0.000550798
+               Max x-displacement : 0.000150214
+  Velocity L2-norm                : 5.22652e-07
+               Max Y-velocity     : 1.05212e-07
+               Max x-velocity     : 1.3271e-06
+  Acceleration L2-norm            : 0
