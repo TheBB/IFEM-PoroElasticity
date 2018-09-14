@@ -43,7 +43,6 @@ PoroElasticity::Mats::Mats (size_t ndof_displ, size_t ndof_press,
 
 const Matrix& PoroElasticity::Mats::getNewtonMatrix () const
 {
-  const_cast<Matrix&>(A[pu_Q]).addBlock(A[up_Q], 1.0, 1, 1, true);
   const_cast<Matrix&>(A[up_Q]) *= -1.0;
 #if INT_DEBUG > 2
   std::cout <<"\nPoroElasticity::Mats::getNewtonMatrix:"
@@ -52,7 +51,7 @@ const Matrix& PoroElasticity::Mats::getNewtonMatrix () const
             <<"\nElement compressibility matrix, S_pp"<< A[pp_S]
             <<"\nElement permeability matrix, P_pp"<< A[pp_P];
 #endif
-  const_cast<Matrix&>(A[pp_S]).add(A[pp_P], h);
+  const_cast<Matrix&>(A[pp_S]).add(A[pp_P], 1.0);
   const Matrix& result = this->BlockElmMats::getNewtonMatrix();
 #if INT_DEBUG > 2
   std::cout <<"\nElement coefficient matrix" << result;
@@ -69,13 +68,6 @@ const Vector& PoroElasticity::Mats::getRHSVector () const
   if (vec.size() > Vp) std::cout <<"Element pressure, Vp"<< vec[Vp];
   std::cout <<"S_ext-S_int"<< b[Fu] <<"S_p"<< b[Fp];
 #endif
-
-  Vector& fp = const_cast<Vector&>(b[Fp]);
-  fp *= h;                  // fp = Fp*h
-  if (A.size() > up_Q && vec.size() > Vu)
-    A[up_Q].multiply(vec[Vu], fp, true, true);  // fp += Q_up^t * u
-  if (A.size() > pp_S && vec.size() > Vp)
-    A[pp_S].multiply(vec[Vp], fp, false, true); // fp += S_pp * p
 
   const Vector& result = this->BlockElmMats::getRHSVector();
 #if INT_DEBUG > 2

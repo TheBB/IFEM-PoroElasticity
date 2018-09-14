@@ -358,9 +358,10 @@ bool PoroElasticity::evalInt (LocalIntegral& elmInt,
                                 scl*alpha*fe.detJxW))
     return false;
 
-  if (!this->evalCompressibilityMatrix(elMat.A[pp_S], fe.basis(2),
-                                       scl*scl*Minv*fe.detJxW))
-    return false;
+  if (m_mode == SIM::DYNAMIC)
+    if (!this->evalCompressibilityMatrix(elMat.A[pp_S], fe.basis(2),
+                                        scl*scl*Minv*fe.detJxW))
+        return false;
 
   if (volumeFlux)
     elMat.b[Fp].add(fe.basis(2),(*volumeFlux)(X)*fe.detJxW);
