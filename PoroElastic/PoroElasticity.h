@@ -88,6 +88,8 @@ protected:
 
     //! \brief Updates the time step size.
     void setStepSize(double dt) { h = dt; }
+    //! \brief Updates the scaling parameter.
+    void setScaling(double scaling) { scl = scaling; }
     //! \brief Updates the perpendicular crack stretch.
     void setCrackStretch(double cs) { lambda = cs; }
 
@@ -99,6 +101,7 @@ protected:
   protected:
     double h;      //!< Current time step size
     double lambda; //!< Perpendicular crack stretch at current location
+    double scl;    //!< Scaling factor
   };
 
 private:
@@ -154,10 +157,10 @@ private:
       double gammah = gamma * P::h;
       A[uu_K] *= betah2 + gammah * s_damp;
       A[uu_K].add(A[uu_M], 1.0 + gammah * m_damp);
-      A[pu_Q].addBlock(A[up_Q], gammah, 1, 1, true);
+      A[pu_Q].addBlock(A[up_Q], gammah / P::scl, 1, 1, true);
       A[up_Q] *= -betah2;
       if (!A[up_D].empty())
-	A[pu_Q].addBlock(A[up_D], -1.0, 1, 1, true);
+	A[pu_Q].addBlock(A[up_D], -1.0 / P::scl, 1, 1, true);
       A[pp_S] *= gammah;
       A[pp_S].add(A[pp_P],betah2);
       this->BlockElmMats::getNewtonMatrix();
@@ -180,11 +183,11 @@ private:
       if (P::A.size() > uu_M && P::vec.size() > Vuacc)
         P::A[uu_M].multiply(P::vec[Vuacc], tu, false,-1);
       if (P::A.size() > up_D && P::vec.size() > Vuacc && !P::A[up_D].empty())
-        P::A[up_D].multiply(P::vec[Vuacc], tp, true,  1);
+        P::A[up_D].multiply(P::vec[Vuacc], tp, 1.0 / P::scl, 1.0, true);
       if (P::A.size() > pp_S && P::vec.size() > Vpvel)
         P::A[pp_S].multiply(P::vec[Vpvel], tp, false,-1);
       if (P::A.size() > up_Q && P::vec.size() > Vuvel)
-        P::A[up_Q].multiply(P::vec[Vuvel], tp, true, -1);
+        P::A[up_Q].multiply(P::vec[Vuvel], tp, -1.0 / P::scl, 1.0, true);
       if (P::A.size() > uu_M && P::vec.size() > Vuvel && m_damp > 0.0)
         P::A[uu_M].multiply(P::vec[Vuvel]*m_damp, tu, false, -1);
       if (P::A.size() > uu_K && P::vec.size() > Vuvel && s_damp > 0.0)

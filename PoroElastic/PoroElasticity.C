@@ -363,7 +363,7 @@ bool PoroElasticity::evalInt (LocalIntegral& elmInt,
                                 Kperm, scl / rhog * fe.detJxW);
 
   this->evalPermeabilityMatrix(elMat.A[pp_P], fe.grad(2),
-                               Kperm, scl*scl/rhog*fe.detJxW);
+                               Kperm, scl/rhog*fe.detJxW);
 
   if (!this->evalElasticityMatrices(elMat, Bmat, fe, X))
     return false;
@@ -373,7 +373,7 @@ bool PoroElasticity::evalInt (LocalIntegral& elmInt,
     return false;
 
   if (!this->evalCompressibilityMatrix(elMat.A[pp_S], fe.basis(2),
-                                       scl*scl*Minv*fe.detJxW))
+                                       scl*Minv*fe.detJxW))
     return false;
 
   if (volumeFlux)
@@ -413,6 +413,7 @@ bool PoroElasticity::finalizeElement (LocalIntegral& elmInt,
                                       const TimeDomain& time, size_t)
 {
   static_cast<Mats&>(elmInt).setStepSize(time.dt);
+  static_cast<Mats&>(elmInt).setScaling(scl);
   return true;
 }
 
@@ -422,6 +423,7 @@ bool PoroElasticity::finalizeElementBou (LocalIntegral& elmInt,
                                          const TimeDomain& time)
 {
   static_cast<Mats&>(elmInt).setStepSize(time.dt);
+  static_cast<Mats&>(elmInt).setScaling(scl);
   return true;
 }
 

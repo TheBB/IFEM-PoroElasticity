@@ -14,6 +14,8 @@
 #include "PoroElasticity.h"
 #include "Utilities.h"
 
+#include <iostream>
+
 
 PoroElasticity::Mats::Mats (size_t ndof_displ, size_t ndof_press,
                             bool neumann, char dynamic, int nbasis, int nsd)
@@ -37,13 +39,13 @@ PoroElasticity::Mats::Mats (size_t ndof_displ, size_t ndof_press,
     A[pp_P].resize(A[pp_S].rows(), A[pp_S].cols());
   }
 
-  h = lambda = 0.0;
+  h = lambda = scl = 0.0;
 }
 
 
 const Matrix& PoroElasticity::Mats::getNewtonMatrix () const
 {
-  const_cast<Matrix&>(A[pu_Q]).addBlock(A[up_Q], 1.0, 1, 1, true);
+  const_cast<Matrix&>(A[pu_Q]).addBlock(A[up_Q], 1.0/scl, 1, 1, true);
   const_cast<Matrix&>(A[up_Q]) *= -1.0;
 #if INT_DEBUG > 2
   std::cout <<"\nPoroElasticity::Mats::getNewtonMatrix:"
@@ -73,7 +75,7 @@ const Vector& PoroElasticity::Mats::getRHSVector () const
   Vector& fp = const_cast<Vector&>(b[Fp]);
   fp *= h;                  // fp = Fp*h
   if (A.size() > up_Q && vec.size() > Vu)
-    A[up_Q].multiply(vec[Vu], fp, true, true);  // fp += Q_up^t * u
+    A[up_Q].multiply(vec[Vu], fp, 1.0/scl, 1.0, true);  // fp += Q_up^t * u
   if (A.size() > pp_S && vec.size() > Vp)
     A[pp_S].multiply(vec[Vp], fp, false, true); // fp += S_pp * p
 
