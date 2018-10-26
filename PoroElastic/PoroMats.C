@@ -69,7 +69,11 @@ const Vector& PoroElasticity::Mats::getRHSVector () const
   std::cout <<"S_ext-S_int"<< b[Fu] <<"S_p"<< b[Fp];
 #endif
 
+  A[pp_P].multiply(vec[Vp], const_cast<Vector&>(b[Fp]), -1.0, 1.0);
+  A[up_Q].multiply(vec[Vp], const_cast<Vector&>(b[Fu]), +1.0, 1.0);
+
   const Vector& result = this->BlockElmMats::getRHSVector();
+
 #if INT_DEBUG > 2
   std::cout <<"\nElement right-hand-side vector"<< result;
 #endif
