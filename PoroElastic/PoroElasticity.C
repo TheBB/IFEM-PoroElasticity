@@ -93,7 +93,17 @@ void PoroElasticity::printLog () const
 
 void PoroElasticity::setMode (SIM::SolutionMode mode)
 {
+  // In the half-static case we need access to the previous timestep,
+  // while in the nonlinear case we need access to the previous iteration.
+  // To keep things simple we ask for two solution vectors in all static modes.
+  if (mode == SIM::STATIC)
+    nSV = 2;
+  else if (mode == SIM::DYNAMIC)
+    nSV = 1;
+
+  // The parent method resizes primsol
   this->Elasticity::setMode(mode);
+
   eS = Fu + 1; // Elasticity::evalBou stores traction force vectors here
   iS = mode == SIM::DYNAMIC ? 1 : 0; // Flag calculation of internal forces
 }
@@ -155,6 +165,8 @@ bool PoroElasticity::initElement (const std::vector<int>& MNPC,
 {
   if (primsol.empty() || primsol.front().empty())
     return true;
+  if (m_mode == SIM::STATIC && (primsol.size() < 2 || primsol[1].empty()))
+    return true;
 
   // Split the nodal correspondance array into one for each solution field
   std::vector<int>::const_iterator pStart = MNPC.begin() + elem_sizes.front();
@@ -166,8 +178,9 @@ bool PoroElasticity::initElement (const std::vector<int>& MNPC,
     elmInt.vec.resize(nsol);
 
   // Extract the element level solution vectors
-  int ierr = utl::gather(MNPCu, nsd, primsol.front(), elmInt.vec[Vu]);
-  ierr += utl::gather(MNPCp, 0, 1, primsol.front(), elmInt.vec[Vp],
+  Vector& sol = (m_mode == SIM::STATIC) ? primsol[1] : primsol.front();
+  int ierr = utl::gather(MNPCu, nsd, sol, elmInt.vec[Vu]);
+  ierr += utl::gather(MNPCp, 0, 1, sol, elmInt.vec[Vp],
                       nsd*basis_sizes.front(), basis_sizes.front());
 
   if (m_mode == SIM::DYNAMIC)
@@ -194,6 +207,8 @@ bool PoroElasticity::initElement (const std::vector<int>& MNPC,
 {
   if (primsol.empty() || primsol.front().empty())
     return true;
+  if (m_mode == SIM::STATIC && (primsol.size() < 2 || primsol[1].empty()))
+    return true;
 
   size_t nsol = m_mode == SIM::DYNAMIC ? NSOL : 2;
   if (elmInt.vec.size() < nsol)
@@ -202,7 +217,8 @@ bool PoroElasticity::initElement (const std::vector<int>& MNPC,
   Matrix temp(npv, MNPC.size());
 
   // Extract the element level solution vectors
-  int ierr = utl::gather(MNPC, npv, primsol.front(), temp);
+  Vector& sol = (m_mode == SIM::STATIC) ? primsol[1] : primsol.front();
+  int ierr = utl::gather(MNPC, npv, sol, temp);
   elmInt.vec[Vp] = temp.getRow(npv);
   elmInt.vec[Vu] = temp.expandRows(-1);
 
